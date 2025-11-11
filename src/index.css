@@ -1,5 +1,14 @@
 /* src/index.css */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #f9fafb; 
+}
+/* Ensure good mobile rendering */
+@media (max-width: 600px) {
+    body {
+        /* This helps text wrap properly on small screens */
+        word-wrap: break-word; 
+    }
+}

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from './components/Navbar';
-import AuthPage from './components/AuthPage';
-import BrowseListings from './components/BrowseListings';
-import ListingDetail from './components/ListingDetail';
-import LandlordDashboard from './components/LandlordDashboard';
-import { Home } from 'lucide-react'; 
+// UPDATE THESE LINES:
+import Navbar from './components/Navbar.jsx'; 
+import AuthPage from './components/AuthPage.jsx'; 
+import BrowseListings from './components/BrowseListings.jsx'; 
+import ListingDetail from './components/ListingDetail.jsx'; 
+import LandlordDashboard from './components/LandlordDashboard.jsx'; 
+
+import { Home } from 'lucide-react';
 import './App.css'; // Keep this to load any custom Vite/React styles
 
 // --- MOCK DATA ---
@@ -114,46 +116,107 @@ function App() {
     setFilteredListings(filtered);
   }, [searchTerm, priceFilter, roomTypeFilter, listings]);
 
-  // --- Home Page Component ---
-  const HomePage = () => (
-    <div className={`min-h-screen ${darkMode ? 'bg-gradient-to-br from-gray-900 to-indigo-900' : 'bg-gradient-to-br from-indigo-50 to-white'}`}>
-        <Navbar 
-            user={user} 
-            userType={userType} 
-            handleSignOut={handleSignOut} 
-            setCurrentView={setCurrentView} 
-            darkMode={darkMode} 
-            setDarkMode={setDarkMode}
-        />
-        <div className="max-w-5xl mx-auto px-4 py-24 text-center">
-            
-            <Home className="text-indigo-600 mx-auto mb-6" size={64} />
+// --- Home Page Component ---
+const HomePage = () => {
+    // Determine if the screen is small (less than 640px)
+    const isMobile = window.innerWidth < 640;
 
-            <h2 className={`text-6xl font-extrabold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                CampusStay: Find Your Next Home
-            </h2>
-            <p className={`text-xl ${darkMode ? 'text-indigo-200' : 'text-gray-600'} mb-12 max-w-2xl mx-auto`}>
-                The simple marketplace connecting students with landlords. Browse affordable rooms or list your property with ease.
-            </p>
-            
-            <div className="flex justify-center gap-6">
-                <button
-                    onClick={() => setCurrentView('browse')}
-                    className="bg-indigo-600 text-white px-10 py-3 rounded-full hover:bg-indigo-700 transition font-semibold text-lg shadow-xl hover:shadow-indigo-500/50 transform hover:scale-105"
-                >
-                    Browse Listings Now
-                </button>
-                <button
-                    onClick={() => setCurrentView('auth')}
-                    className={`${darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-white text-indigo-600 border-2 border-indigo-600 hover:bg-indigo-50'} px-10 py-3 rounded-full transition font-semibold text-lg shadow-md transform hover:scale-105`}
-                >
-                    Sign Up / List Property
-                </button>
+    const mainContainerStyle = { 
+        minHeight: '100vh', 
+        backgroundColor: '#f9fafb',
+        padding: isMobile ? '0 15px' : '0 20px',
+        fontFamily: 'sans-serif'
+    };
+    
+    const contentBoxStyle = { 
+        maxWidth: '900px', 
+        margin: '0 auto', 
+        paddingTop: isMobile ? '80px' : '150px', 
+        textAlign: 'center' 
+    };
+
+    const headingStyle = { 
+        fontSize: isMobile ? '36px' : '48px', // Smaller heading on mobile
+        fontWeight: '800', 
+        marginBottom: '10px', 
+        color: '#1f2937' 
+    };
+
+    const textStyle = { 
+        fontSize: isMobile ? '16px' : '18px', // Smaller text on mobile
+        color: '#6b7280', 
+        marginBottom: '40px', 
+        maxWidth: '600px', 
+        margin: '0 auto 40px'
+    };
+
+    const buttonContainerStyle = { 
+        display: 'flex', 
+        flexDirection: isMobile ? 'column' : 'row', // Stack buttons on mobile
+        justifyContent: 'center', 
+        gap: '15px' 
+    };
+
+    return (
+        <div style={mainContainerStyle}>
+            <Navbar 
+                user={user} 
+                userType={userType} 
+                handleSignOut={handleSignOut} 
+                setCurrentView={setCurrentView} 
+            />
+            <div style={contentBoxStyle}>
+                
+                <Home style={{ color: '#4f46e5', margin: '0 auto', marginBottom: '20px' }} size={isMobile ? 48 : 64} />
+
+                <h2 style={headingStyle}>
+                    CampusStay: Find Your Next Home
+                </h2>
+                <p style={textStyle}>
+                    The simple marketplace connecting students with landlords. Browse affordable rooms or list your property with ease.
+                </p>
+                
+                <div style={buttonContainerStyle}>
+                    <button
+                        onClick={() => setCurrentView('browse')}
+                        style={{
+                            backgroundColor: '#4f46e5',
+                            color: 'white',
+                            padding: '12px 20px',
+                            borderRadius: '25px',
+                            border: 'none',
+                            fontSize: '16px',
+                            fontWeight: '600',
+                            cursor: 'pointer',
+                            boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                        }}
+                        onMouseOver={e => e.currentTarget.style.backgroundColor = '#4338ca'}
+                        onMouseOut={e => e.currentTarget.style.backgroundColor = '#4f46e5'}
+                    >
+                        Browse Listings Now
+                    </button>
+                    <button
+                        onClick={() => setCurrentView('auth')}
+                        style={{
+                            backgroundColor: 'white',
+                            color: '#4f46e5',
+                            border: '2px solid #4f46e5',
+                            padding: '12px 20px',
+                            borderRadius: '25px',
+                            fontSize: '16px',
+                            fontWeight: '600',
+                            cursor: 'pointer',
+                        }}
+                        onMouseOver={e => e.currentTarget.style.backgroundColor = '#eef2ff'}
+                        onMouseOut={e => e.currentTarget.style.backgroundColor = 'white'}
+                    >
+                        Sign Up / List Property
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-  );
-
+    );
+};
 
   // --- Main Rendering Logic ---
   const renderView = () => {
